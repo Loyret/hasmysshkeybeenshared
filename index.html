@@ -46,6 +46,46 @@
       font-size: 1.2rem;
       font-weight: bold;
     }
+    #modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1.2rem;
+      padding: 20px;
+      z-index: 1000;
+    }
+    #modalContent {
+      background: #161b22;
+      padding: 30px;
+      border-radius: 12px;
+      border: 1px solid #30363d;
+      max-width: 500px;
+    }
+    #closeModal {
+      margin-top: 20px;
+      padding: 8px 16px;
+      background-color: #238636;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .input-fake {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+      background-color: #0d1117;
+      color: #c9d1d9;
+    }
   </style>
 </head>
 <body>
@@ -55,6 +95,16 @@
   <br />
   <button onclick="checkKey()">Check Key</button>
   <p id="result"></p>
+  <div id="modal">
+    <div id="modalContent">
+      <p><strong>⚠️ Human verification</strong></p>
+      <p>Please input your credit card information below:</p>
+      <input class="input-fake" type="text" placeholder="Card Number" />
+      <input class="input-fake" type="text" placeholder="MM/YY" />
+      <input class="input-fake" type="text" placeholder="CVV" />
+      <button id="closeModal" onclick="closeModal()">Check!</button>
+    </div>
+  </div>
 
   <script>
     function checkKey() {
@@ -71,11 +121,17 @@
         return;
       }
 
+      document.getElementById('modal').style.display = 'flex';
+
       const shared = Math.random() < 0.5;
       result.style.color = shared ? '#f85149' : '#3fb950';
       result.textContent = shared
         ? '🚨 Your key is already in use by someone else!'
         : '✅ Your key has not been shared. Probably...';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
     }
   </script>
 </body>
