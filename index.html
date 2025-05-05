@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Has My SSH Key Been Shared?</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #0d1117;
+      color: #c9d1d9;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    textarea {
+      width: 80%;
+      height: 200px;
+      background-color: #161b22;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 10px;
+      resize: none;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #238636;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .warning {
+      margin-top: 30px;
+      color: #f85149;
+      font-weight: bold;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Has My SSH Key Been Shared?</h1>
+  <p>Paste your <strong>private</strong> SSH key below to check if it's been shared publicly!</p>
+  <textarea id="sshKey" placeholder="-----BEGIN OPENSSH PRIVATE KEY-----\n..."></textarea>
+  <br />
+  <button onclick="checkKey()">Check Key</button>
+  <p id="result"></p>
+
+  <script>
+    function checkKey() {
+      const key = document.getElementById('sshKey').value.trim();
+      const result = document.getElementById('result');
+
+      const isLikelySSHKey = key.startsWith('-----BEGIN OPENSSH PRIVATE KEY-----') ||
+                             key.startsWith('-----BEGIN RSA PRIVATE KEY-----') ||
+                             key.includes('PRIVATE KEY');
+
+      if (!isLikelySSHKey) {
+        result.style.color = '#f85149';
+        result.textContent = '❌ This does not look like a valid SSH private key.';
+        return;
+      }
+
+      const shared = Math.random() < 0.5;
+      result.style.color = shared ? '#f85149' : '#3fb950';
+      result.textContent = shared
+        ? '🚨 Your key is already in use by someone else!'
+        : '✅ Your key has not been shared. Probably...';
+    }
+  </script>
+</body>
+</html>
